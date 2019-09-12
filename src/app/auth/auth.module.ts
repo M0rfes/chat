@@ -12,6 +12,7 @@ const routes: Routes = [
     path: '',
     component: AuthPage,
     children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
       {
         path: 'signup',
         loadChildren: './signup/signup.module#SignupPageModule',
