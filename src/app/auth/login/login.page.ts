@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { Component } from '@angular/core';
+import { AuthService } from '../auth.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
-  constructor(private db: AngularFirestore) {}
+export class LoginPage {
+  constructor(private authS: AuthService, private navCo: NavController) {}
 
-  ngOnInit() {
-    this.db
-      .collection('test')
-      .valueChanges()
-      .subscribe(console.log);
+  async login() {
+    await this.authS.googleLogin();
+    this.navCo.navigateForward('/chat');
   }
 }

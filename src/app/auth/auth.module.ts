@@ -13,10 +13,6 @@ const routes: Routes = [
     component: AuthPage,
     children: [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
-      {
-        path: 'signup',
-        loadChildren: './signup/signup.module#SignupPageModule',
-      },
       { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
     ],
   },
