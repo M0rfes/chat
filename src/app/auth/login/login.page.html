@@ -1,9 +1,23 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
-
+<ion-content text-center>
+  <ion-label>
+    <ion-button expand="block" fill="outline" shape="round" margin-bottom>
+      <ion-icon name="logo-google" slot="start"></ion-icon>
+      <ion-text>As UserName</ion-text>
+    </ion-button>
+    <ion-button
+      expand="block"
+      fill="outline"
+      shape="round"
+      color="secondary"
+      routerLink="/auth/signup"
+    >
+      <ion-icon name="person-add" slot="start"></ion-icon>
+      <ion-text>new Account</ion-text>
+    </ion-button>
+  </ion-label>
 </ion-content>
