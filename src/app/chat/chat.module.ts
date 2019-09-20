@@ -22,7 +22,7 @@ const routes: Routes = [
         ],
       },
       {
-        path: 'channel',
+        path: 'channels',
         children: [
           {
             path: '',
@@ -39,10 +39,10 @@ const routes: Routes = [
           },
         ],
       },
-      { path: '', redirectTo: '/chat/contact', pathMatch: 'full' },
+      { path: '', redirectTo: '/chat/channels', pathMatch: 'full' },
     ],
   },
-  { path: '', pathMatch: 'full', redirectTo: '/chat/tabs/contact' },
+  { path: '', pathMatch: 'full', redirectTo: '/chat/channels' },
 ];
 
 @NgModule({

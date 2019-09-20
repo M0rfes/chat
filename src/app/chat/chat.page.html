@@ -1,26 +1,25 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>channel</ion-title>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button>
+        <ion-icon slot="icon-only" name="settings"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-tabs>
-    <ion-tab-bar slot="top">
+  <ion-tabs (ionTabsDidChange)="change($event)">
+    <ion-tab-bar slot="bottom">
       <ion-tab-button tab="contact">
         <ion-icon name="contacts"></ion-icon>
-        <ion-label>contact</ion-label>
       </ion-tab-button>
-
-      <ion-tab-button tab="channel">
+      <ion-tab-button tab="channels">
         <ion-icon name="chatbubbles"></ion-icon>
-        <ion-label>channels</ion-label>
       </ion-tab-button>
-
       <ion-tab-button tab="favorites">
         <ion-icon name="bookmark"></ion-icon>
-        <ion-label>Fav</ion-label>
       </ion-tab-button>
     </ion-tab-bar>
   </ion-tabs>
-  <ion-router-outlet></ion-router-outlet>
 </ion-content>

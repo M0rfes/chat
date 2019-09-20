@@ -6,7 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
+  title: string;
   constructor() {}
-
   ngOnInit() {}
+  change({ tab }: { tab: string }) {
+    this.title = tab;
+  }
 }
