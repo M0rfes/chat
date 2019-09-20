@@ -21,15 +21,7 @@ export class AppComponent implements OnInit {
   ) {
     this.initializeApp();
   }
-  ngOnInit(): void {
-    this.authS.user.subscribe(user => {
-      if (user) {
-        this.navCon.navigateRoot('/chat');
-      } else {
-        this.navCon.navigateRoot('/');
-      }
-    });
-  }
+  ngOnInit(): void {}
 
   initializeApp() {
     this.platform.ready().then(() => {

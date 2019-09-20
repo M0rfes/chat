@@ -12,22 +12,37 @@ const routes: Routes = [
     path: '',
     component: ChatPage,
     children: [
-      { path: '', redirectTo: 'channel', pathMatch: 'full' },
       {
         path: 'contact',
-        loadChildren: './contact/contact.module#ContactPageModule',
+        children: [
+          {
+            path: '',
+            loadChildren: './contact/contact.module#ContactPageModule',
+          },
+        ],
       },
       {
         path: 'channel',
-        loadChildren: './channel/channel.module#ChannelPageModule',
+        children: [
+          {
+            path: '',
+            loadChildren: './channel/channel.module#ChannelPageModule',
+          },
+        ],
       },
       {
-        path: 'favourite',
-        loadChildren: './favourite/favourite.module#FavouritePageModule',
+        path: 'favorites',
+        children: [
+          {
+            path: '',
+            loadChildren: './favourite/favourite.module#FavouritePageModule',
+          },
+        ],
       },
+      { path: '', redirectTo: '/chat/contact', pathMatch: 'full' },
     ],
   },
-  { path: '**', redirectTo: '' },
+  { path: '', pathMatch: 'full', redirectTo: '/chat/tabs/contact' },
 ];
 
 @NgModule({

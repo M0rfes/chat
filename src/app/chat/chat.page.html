@@ -1,1 +1,26 @@
-<ion-router-outlet></ion-router-outlet>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>channel</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-tabs>
+    <ion-tab-bar slot="top">
+      <ion-tab-button tab="contact">
+        <ion-icon name="contacts"></ion-icon>
+        <ion-label>contact</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="channel">
+        <ion-icon name="chatbubbles"></ion-icon>
+        <ion-label>channels</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="favorites">
+        <ion-icon name="bookmark"></ion-icon>
+        <ion-label>Fav</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+  <ion-router-outlet></ion-router-outlet>
+</ion-content>
