@@ -2,13 +2,13 @@
   <ion-toolbar>
     <ion-title>{{ title }}</ion-title>
     <ion-buttons slot="secondary">
-      <ion-button>
+      <ion-button (click)="popUpSetting($event)">
         <ion-icon slot="icon-only" name="settings"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content (swipeLeft)="handelSwipeLeft()" (swipeRight)="handelSwipeRight()">
   <ion-tabs (ionTabsDidChange)="change($event)">
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="contact">

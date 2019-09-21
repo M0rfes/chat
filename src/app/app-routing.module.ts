@@ -12,6 +12,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: 'auth' },
+  { path: 'settings', loadChildren: './settings/settings.module#SettingsPageModule' },
+
 ];
 
 @NgModule({

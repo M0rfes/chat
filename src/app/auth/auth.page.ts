@@ -13,7 +13,7 @@ export class AuthPage implements OnInit {
   ngOnInit() {
     this.authS.user.subscribe(user => {
       if (user) {
-        this.navCon.navigateRoot('/chat');
+        this.navCon.navigateRoot('/chat/channels');
       }
     });
   }

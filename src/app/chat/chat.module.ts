@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
-
 import { ChatPage } from './chat.page';
+import { ProfilePageModule } from '../profile/profile.module';
+import { SettingsPageModule } from '../settings/settings.module';
 
 const routes: Routes = [
   {
@@ -50,6 +51,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    ProfilePageModule,
+    SettingsPageModule,
     RouterModule.forChild(routes),
   ],
   declarations: [ChatPage],
