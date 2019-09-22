@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from 'src/environments/environment';
 import { ProfilePageModule } from './profile/profile.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +28,7 @@ import { ProfilePageModule } from './profile/profile.module';
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule, // imports firebase/storage only needed for storage features
     ProfilePageModule,
+    ReactiveFormsModule,
   ],
   providers: [
     StatusBar,
