@@ -38,26 +38,30 @@ export class AuthService {
 
   private async oAuthLogin(provider: auth.GoogleAuthProvider) {
     const credential = await this.afAuth.auth.signInWithPopup(provider);
-    return await this.updateUserData(credential.user);
+    return await this.setUserData(credential.user);
   }
 
-  private updateUserData(user: User) {
+  private setUserData(user: User) {
     // Sets user data to firestore on login
 
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`,
     );
 
-    const data = {
+    const data: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
     };
-
     return userRef.set(data, { merge: true });
   }
-
+  updateUserData(user: User) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `users/${user.uid}`,
+    );
+    return userRef.update(user);
+  }
   signOut() {
     this.afAuth.auth.signOut().then(() => {
       this.router.navigate(['/']);

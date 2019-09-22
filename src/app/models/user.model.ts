@@ -1,4 +1,7 @@
-import { User } from 'firebase';
-export interface User extends User {
+export interface User {
+  displayName: string;
+  photoURL: string;
+  uid: string;
+  email: string;
   nickName?: string;
 }

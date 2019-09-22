@@ -9,4 +9,27 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <ion-grid text-center>
+    <ion-row>
+      <ion-col size="10" offset="1">
+        <form>
+          <ion-row justify-content-center>
+            <ion-col size="6" offset="3">
+              <ion-avatar (click)="file.click()">
+                <ion-img [src]="(user | async).photoURL"></ion-img>
+              </ion-avatar>
+              <input type="file" hidden #file />
+            </ion-col>
+          </ion-row>
+          <ion-item>
+            <ion-label>
+              Nick Name:
+            </ion-label>
+            <ion-input type="text" name="text"></ion-input>
+          </ion-item>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
