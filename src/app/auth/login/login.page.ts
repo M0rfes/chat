@@ -16,9 +16,13 @@ export class LoginPage {
   ) {}
 
   async login() {
-    await this.authS.googleLogin();
+    const { user } = await this.authS.googleLogin();
     const modal = await this.modalCon.create({
       component: ProfilePage,
+      componentProps: {
+        new: true,
+        user,
+      },
     });
     await modal.present();
     this.navCo.navigateForward('/chat');

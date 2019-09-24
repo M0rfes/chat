@@ -7,6 +7,9 @@ import {
 import { ProfilePage } from '../profile/profile.page';
 import { SettingsPage } from '../settings/settings.page';
 
+import { User } from '../models/user.model';
+import { UserService } from '../service/user.service';
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
@@ -19,19 +22,26 @@ export class ChatPage implements OnInit {
     'channels',
     'favorites',
   ];
-
+  user: User;
   constructor(
     private popCon: PopoverController,
     private navCon: NavController,
     private modalCon: ModalController,
+    private userS: UserService,
   ) {}
-  ngOnInit() {}
+  ngOnInit() {
+    this.userS.user$.subscribe(user => (this.user = user));
+  }
   change({ tab }: { tab: 'contact' | 'channels' | 'favorites' }) {
     this.title = tab;
   }
-  async loadProfile() {
+  async loadProfile(user: User) {
     const modal = await this.modalCon.create({
       component: ProfilePage,
+      componentProps: {
+        new: false,
+        user,
+      },
     });
     return modal.present();
   }
@@ -40,7 +50,7 @@ export class ChatPage implements OnInit {
       component: SettingsPage,
       event,
       componentProps: {
-        loadModal: this.loadProfile.bind(this),
+        loadModal: this.loadProfile.bind(this, this.user),
       },
     });
     return popUp.present();

@@ -11,7 +11,7 @@ export class AuthPage implements OnInit {
   constructor(private authS: AuthService, private navCon: NavController) {}
 
   ngOnInit() {
-    this.authS.user.subscribe(user => {
+    this.authS.authUser.subscribe(user => {
       if (user) {
         this.navCon.navigateRoot('/chat/channels');
       }

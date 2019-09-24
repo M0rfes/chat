@@ -3,18 +3,18 @@
     <ion-title>Profile</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="closeModal()">
-        <ion-icon name="arrow-round-back"></ion-icon>
+        <ion-icon name="arrow-round-back" *ngIf="!new"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid text-center>
+  <ion-grid class="ion-text-center">
     <ion-row>
       <ion-col size="10" offset="1">
         <form [formGroup]="form">
-          <ion-row justify-content-center>
+          <ion-row class="ion-justify-content-center">
             <ion-col size="6" offset="3" (click)="file.click()">
               <ion-avatar>
                 <ion-img [src]="photoURL" name="file"></ion-img>
@@ -25,13 +25,7 @@
                 color="tertiary"
               ></ion-icon>
 
-              <input
-                type="file"
-                hidden
-                #file
-                (change)="onFileChange($event)"
-                formControlName="file"
-              />
+              <input type="file" hidden #file (change)="onFileChange($event)" />
             </ion-col>
           </ion-row>
           <ion-item class="mar">
@@ -40,8 +34,8 @@
             </ion-label>
             <ion-input
               type="text"
-              name="nickName"
-              formControlName="nickName"
+              name="nickname"
+              formControlName="nickname"
             ></ion-input>
           </ion-item>
           <ion-button type="submit" (click)="onSubmit()" expand="block"

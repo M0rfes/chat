@@ -1,7 +1,9 @@
-export interface User {
-  displayName: string;
-  photoURL: string;
-  uid: string;
-  email: string;
-  nickName?: string;
+export class User {
+  constructor(
+    public readonly displayName: string,
+    public readonly photoURL: string,
+    public readonly uid: string,
+    public readonly email: string,
+    public readonly nickname: string,
+  ) {}
 }
