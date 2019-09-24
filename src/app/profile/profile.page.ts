@@ -1,16 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
-import { AuthService } from '../auth/auth.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../models/user.model';
 import { UserService } from '../service/user.service';
+import { NicknameValidator } from '../util/nickname.validator';
+
+import { AngularFirestore } from '@angular/fire/firestore';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage {
+export class ProfilePage implements OnInit {
   @Input() new: boolean;
   @Input() user: User;
   form: FormGroup;
@@ -18,23 +20,28 @@ export class ProfilePage {
   file: File;
   constructor(
     private modalCon: ModalController,
-    private authS: AuthService,
+    private asf: AngularFirestore,
     private formB: FormBuilder,
     private userS: UserService,
   ) {}
 
-  ionViewDidEnter() {
+  ngOnInit(): void {
     this.photoURL = this.user.photoURL;
+    const nickNameVal = [
+      [Validators.required, Validators.minLength(5), Validators.maxLength(25)],
+      [NicknameValidator.nickname(this.asf, this.user, this.new)],
+    ];
     if (this.new) {
       this.form = this.formB.group({
-        nickname: '',
+        nickname: ['', ...nickNameVal],
       });
     } else {
       this.form = this.formB.group({
-        nickname: this.user.nickname,
+        nickname: [this.user.nickname, ...nickNameVal],
       });
     }
   }
+
   onFileChange({ target: { files } }: { target: { files: FileList } }) {
     this.file = files[0];
     const reader = new FileReader();
@@ -66,5 +73,8 @@ export class ProfilePage {
 
   get nickname() {
     return this.form.get('nickname');
+  }
+  get profileForm() {
+    return this.form;
   }
 }

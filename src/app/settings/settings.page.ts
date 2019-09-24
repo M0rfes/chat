@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -8,10 +9,16 @@ import { PopoverController } from '@ionic/angular';
 })
 export class SettingsPage implements OnInit {
   @Input() loadModal: () => Promise<void>;
-  constructor(private popOverCon: PopoverController) {}
+  constructor(
+    private popOverCon: PopoverController,
+    private authS: AuthService,
+  ) {}
 
   ngOnInit() {}
   loadProfileModal() {
     this.loadModal().then(_ => this.popOverCon.dismiss());
+  }
+  doLogout() {
+    this.authS.signOut();
   }
 }

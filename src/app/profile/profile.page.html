@@ -36,9 +36,26 @@
               type="text"
               name="nickname"
               formControlName="nickname"
+              required
+              minlength="5"
+              maxlength="25"
             ></ion-input>
           </ion-item>
-          <ion-button type="submit" (click)="onSubmit()" expand="block"
+          <ion-label *ngIf="nickname.invalid && nickname.dirty" color="danger">
+            <ion-text *ngIf="nickname.errors['nickname']; else def">
+              nick name already taken
+            </ion-text>
+            <ng-template #def>
+              <ion-text>
+                nickname must be between 5 and 25
+              </ion-text>
+            </ng-template>
+          </ion-label>
+          <ion-button
+            type="submit"
+            (click)="onSubmit()"
+            expand="block"
+            [disabled]="!profileForm.valid"
             >Submit</ion-button
           >
         </form>
