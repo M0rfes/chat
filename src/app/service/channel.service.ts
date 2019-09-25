@@ -23,4 +23,13 @@ export class ChannelService {
   updateChannel(id: string, channel: Partial<Channel>) {
     return this.channelCollection.doc<Channel>(id).update({ ...channel });
   }
+  findOne(id: string) {
+    return this.channelCollection.doc<Channel>(id).valueChanges();
+  }
+  getALL() {
+    return this.channelCollection.get();
+  }
+  delete(id: string) {
+    return this.channelCollection.doc(id).delete();
+  }
 }
