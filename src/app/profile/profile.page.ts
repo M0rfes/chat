@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../models/user.model';
@@ -10,6 +10,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { switchMap, finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { FileUploadService } from '../service/file-upload.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,6 +31,8 @@ export class ProfilePage implements OnInit, OnDestroy {
     private afStor: AngularFireStorage,
     private formB: FormBuilder,
     private userS: UserService,
+    private LoadingCon: LoadingController,
+    private fileUploadS: FileUploadService,
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +51,7 @@ export class ProfilePage implements OnInit, OnDestroy {
       });
     }
   }
+
   onPreview(uri: string) {
     this.photoURL = uri;
   }
@@ -58,17 +62,6 @@ export class ProfilePage implements OnInit, OnDestroy {
     const modal = await this.modalCon.getTop();
     modal.dismiss();
   }
-  private uploadProfilePhoto() {
-    const path = `profile/${this.user.displayName}`;
-    console.log(path);
-    return this.afStor
-      .upload(path, this.file)
-      .snapshotChanges()
-      .pipe(
-        finalize(() => {}),
-        switchMap(() => this.afStor.ref(path).getDownloadURL()),
-      );
-  }
   private submit(user: User) {
     if (this.new) {
       return this.userS.createUser(user);
@@ -77,18 +70,28 @@ export class ProfilePage implements OnInit, OnDestroy {
       return new Promise(res => res(null));
     }
   }
-  onSubmit() {
+  async onSubmit() {
+    const path = `profile/${this.user.uid}`;
+    const loading = await this.LoadingCon.create({
+      message: 'uploading',
+      duration: 2000,
+    });
+    loading.present();
     if (this.file) {
-      this.sub = this.uploadProfilePhoto().subscribe(photoURL => {
-        const newUser = new User(
-          this.user.displayName,
-          photoURL,
-          this.user.uid,
-          this.user.email,
-          this.nickname.value,
-        );
-        this.submit(newUser).then(() => this.closeModal());
-      });
+      this.sub = this.fileUploadS
+        .upload(path, this.file)
+        .subscribe(async photoURL => {
+          const newUser = new User(
+            this.user.displayName,
+            photoURL,
+            this.user.uid,
+            this.user.email,
+            this.nickname.value,
+          );
+          await this.submit(newUser);
+          await loading.dismiss();
+          await this.closeModal();
+        });
     } else {
       const newUser = new User(
         this.user.displayName,
@@ -97,7 +100,9 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.user.email,
         this.nickname.value,
       );
-      this.submit(newUser).then(() => this.closeModal());
+      await this.submit(newUser);
+      await loading.dismiss();
+      await this.closeModal();
     }
   }
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-favourite',
@@ -6,10 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./favourite.page.scss'],
 })
 export class FavouritePage implements OnInit {
-
-  constructor() { }
+  constructor(private userS: UserService) {}
 
   ngOnInit() {
+    this.userS.getAll().subscribe(console.log);
   }
-
 }

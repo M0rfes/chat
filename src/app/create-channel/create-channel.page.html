@@ -9,4 +9,65 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <!-- <ion-grid class="ion-text-center">
+    <ion-row>
+      <ion-col size="10" offset="1">
+        <form [formGroup]="form">
+          <ion-row class="ion-justify-content-center">
+            <ion-col size="6" offset="3" (click)="file.click()">
+              <ion-avatar>
+                <ion-img [src]="photoURL" name="file"></ion-img>
+              </ion-avatar>
+              <ion-icon
+                name="camera"
+                class="camera"
+                color="tertiary"
+              ></ion-icon>
+
+              <input
+                type="file"
+                hidden
+                #file
+                appPreview
+                (preview)="onPreview($event)"
+                (file)="onFile($event)"
+                accept="image/png,image/jpg/,image/jpeg"
+              />
+            </ion-col>
+          </ion-row>
+          <ion-item class="mar">
+            <ion-label>
+              Nick Name:
+            </ion-label>
+            <ion-input
+              type="text"
+              name="nickname"
+              formControlName="nickname"
+              required
+              minlength="5"
+              maxlength="25"
+            ></ion-input>
+          </ion-item>
+          <ion-label *ngIf="nickname.invalid && nickname.dirty" color="danger">
+            <ion-text *ngIf="nickname.errors['nickname']; else def">
+              nick name already taken
+            </ion-text>
+            <ng-template #def>
+              <ion-text>
+                nickname must be between 5 and 25
+              </ion-text>
+            </ng-template>
+          </ion-label>
+          <ion-button
+            type="submit"
+            (click)="onSubmit()"
+            expand="block"
+            [disabled]="!profileForm.valid"
+            >Submit</ion-button
+          >
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+</ion-content>

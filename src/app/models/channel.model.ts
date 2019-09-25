@@ -1,7 +1,8 @@
 export class Channel {
   constructor(
-    private readonly name: string,
-    private readonly description: string,
-    private readonly userId: string,
+    public readonly name: string,
+    public readonly description: string,
+    public readonly userId: string,
+    public id?: string,
   ) {}
 }

@@ -20,7 +20,7 @@ export class LoginPage {
 
   async login() {
     const { user } = await this.authS.googleLogin();
-    this.userS.findOn(user.uid).subscribe(async u => {
+    this.userS.findOne(user.uid).subscribe(async u => {
       if (u) {
         this.navCo.navigateForward('/chat/channels');
       } else {

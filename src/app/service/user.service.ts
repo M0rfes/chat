@@ -17,7 +17,7 @@ export class UserService {
   user$: Observable<User>;
   user: User;
 
-  userCollectionRef: AngularFirestoreCollection<User>;
+  private userCollectionRef: AngularFirestoreCollection<User>;
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
@@ -47,8 +47,11 @@ export class UserService {
   setOnline(isOnline: boolean) {
     return this.userCollectionRef.doc(this.user.uid).update({ isOnline });
   }
-  findOn(uid: string) {
+  findOne(uid: string) {
     return this.userCollectionRef.doc(uid).valueChanges();
+  }
+  getAll() {
+    return this.userCollectionRef.get();
   }
   allOnlineUsers() {
     return this.afs
