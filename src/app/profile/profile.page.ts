@@ -66,8 +66,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     if (this.new) {
       return this.userS.createUser(user);
     } else {
-      this.sub = this.userS.updateUserData(user);
-      return new Promise(res => res(null));
+      return this.userS.updateUserData(user);
     }
   }
   async onSubmit() {

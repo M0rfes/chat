@@ -40,9 +40,7 @@ export class UserService {
     return userRef.set({ ...user }, { merge: true });
   }
   updateUserData(NewUser: Partial<User>) {
-    return this.user$.subscribe(user =>
-      this.userCollectionRef.doc(user.uid).update({ ...user, ...NewUser }),
-    );
+    return this.userCollectionRef.doc(this.user.uid).update({ ...NewUser });
   }
   setOnline(isOnline: boolean) {
     return this.userCollectionRef.doc(this.user.uid).update({ isOnline });

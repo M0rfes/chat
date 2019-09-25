@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <!-- <ion-grid class="ion-text-center">
+  <ion-grid class="ion-text-center">
     <ion-row>
       <ion-col size="10" offset="1">
         <form [formGroup]="form">
@@ -38,24 +38,47 @@
           </ion-row>
           <ion-item class="mar">
             <ion-label>
-              Nick Name:
+              Name:
             </ion-label>
             <ion-input
               type="text"
               name="nickname"
-              formControlName="nickname"
+              formControlName="name"
               required
               minlength="5"
               maxlength="25"
             ></ion-input>
           </ion-item>
-          <ion-label *ngIf="nickname.invalid && nickname.dirty" color="danger">
-            <ion-text *ngIf="nickname.errors['nickname']; else def">
+          <ion-label *ngIf="name.invalid && name.dirty" color="danger">
+            <ion-text *ngIf="name.errors['nickname']; else def">
               nick name already taken
             </ion-text>
             <ng-template #def>
               <ion-text>
-                nickname must be between 5 and 25
+                name must be between 5 and 25
+              </ion-text>
+            </ng-template>
+          </ion-label>
+          <ion-item class="mar">
+            <ion-label>
+              Description:
+            </ion-label>
+            <ion-textarea
+              type="text"
+              name="nickname"
+              formControlName="description"
+              required
+              rows="6"
+              cols="20"
+            ></ion-textarea>
+          </ion-item>
+          <ion-label *ngIf="name.invalid && name.dirty" color="danger">
+            <ion-text *ngIf="name.errors['nickname']; else def">
+              nick name already taken
+            </ion-text>
+            <ng-template #def>
+              <ion-text>
+                name must be between 5 and 25
               </ion-text>
             </ng-template>
           </ion-label>
@@ -69,5 +92,5 @@
         </form>
       </ion-col>
     </ion-row>
-  </ion-grid> -->
+  </ion-grid>
 </ion-content>

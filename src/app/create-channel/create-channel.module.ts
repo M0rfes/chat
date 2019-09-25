@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { CreateChannelPage } from './create-channel.page';
+import { SharedModule } from '../shared/shared.module';
+import { PreviewDirective } from '../preview.directive';
 
 const routes: Routes = [
   {
@@ -21,6 +23,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     IonicModule,
     RouterModule.forChild(routes),
+    SharedModule,
   ],
   declarations: [CreateChannelPage],
 })

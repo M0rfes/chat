@@ -20,4 +20,7 @@ export class ChannelService {
     });
     return await this.channelCollection.doc<Channel>(id).update({ id });
   }
+  updateChannel(id: string, channel: Partial<Channel>) {
+    return this.channelCollection.doc<Channel>(id).update({ ...channel });
+  }
 }

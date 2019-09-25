@@ -4,12 +4,12 @@ import { ModalController, LoadingController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage } from '@angular/fire/storage';
-import { UserService } from '../service/user.service';
+
 import { FileUploadService } from '../service/file-upload.service';
-import { NicknameValidator } from '../util/nickname.validator';
+
 import { User } from '../models/user.model';
 import { ChannelService } from '../service/channel.service';
+import { Channel } from '../models/channel.model';
 
 @Component({
   selector: 'app-create-channel',
@@ -18,6 +18,7 @@ import { ChannelService } from '../service/channel.service';
 })
 export class CreateChannelPage implements OnInit, OnDestroy {
   @Input() new: boolean;
+  @Input() channel?: Channel;
   @Input() user: User;
   form: FormGroup;
   photoURL: string;
@@ -34,86 +35,87 @@ export class CreateChannelPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.channelS.test();
-
-    // this.photoURL = this.user.photoURL;
-    // const nameVal = [
-    //   [Validators.required, Validators.minLength(5), Validators.maxLength(25)],
-    //   [NicknameValidator.nickname(this.asf, this.user, this.new)],
-    // ];
-    // if (this.new) {
-    //   this.form = this.formB.group({
-    //     name: ['', ...nameVal],
-    //     description: [''],
-    //   });
-    // } else {
-    //   this.form = this.formB.group({
-    //     name: ['', ...nameVal],
-    //     description: [''],
-    //   });
-    // }
+    this.photoURL = this.channel
+      ? this.channel.photoURL
+      : 'https://source.unsplash.com/random';
+    const nameVal = [
+      [Validators.required, Validators.minLength(5), Validators.maxLength(25)],
+      // [NicknameValidator.nickname(this.asf, this.user, this.new)],
+    ];
+    if (this.new) {
+      this.form = this.formB.group({
+        name: ['', ...nameVal],
+        description: [''],
+      });
+    } else {
+      this.form = this.formB.group({
+        name: ['', ...nameVal],
+        description: [''],
+      });
+    }
   }
 
-  // onPreview(uri: string) {
-  //   this.photoURL = uri;
-  // }
-  // onFile(file: File) {
-  //   this.file = file;
-  // }
-  // async closeModal() {
-  //   const modal = await this.modalCon.getTop();
-  //   modal.dismiss();
-  // }
-  // private submit(user: User) {
-  //   if (this.new) {
-  //     return this.userS.createUser(user);
-  //   } else {
-  //     this.sub = this.userS.updateUserData(user);
-  //     return new Promise(res => res(null));
-  //   }
-  // }
-  // async onSubmit() {
-  //   const path = `channel/${this.user.uid}`;
-  //   const loading = await this.LoadingCon.create({
-  //     message: 'uploading',
-  //     duration: 2000,
-  //   });
-  //   loading.present();
-  //   if (this.file) {
-  //     this.sub = this.fileUploadS
-  //       .upload(path, this.file)
-  //       .subscribe(async photoURL => {
-  //         const newUser = new User(
-  //           this.user.displayName,
-  //           photoURL,
-  //           this.user.uid,
-  //           this.user.email,
-  //           this.nickname.value,
-  //         );
-  //         await this.submit(newUser);
-  //         await loading.dismiss();
-  //         await this.closeModal();
-  //       });
-  //   } else {
-  //     const newUser = new User(
-  //       this.user.displayName,
-  //       this.photoURL,
-  //       this.user.uid,
-  //       this.user.email,
-  //       this.nickname.value,
-  //     );
-  //     await this.submit(newUser);
-  //     await loading.dismiss();
-  //     await this.closeModal();
-  //   }
-  // }
+  onPreview(uri: string) {
+    this.photoURL = uri;
+  }
+  onFile(file: File) {
+    this.file = file;
+  }
+  async closeModal() {
+    const modal = await this.modalCon.getTop();
+    modal.dismiss();
+  }
+  private submit(channel: Channel) {
+    if (this.new) {
+      return this.channelS.createChannel(channel);
+    } else {
+      this.channelS.updateChannel(this.channel.id, channel);
+      return new Promise(res => res(null));
+    }
+  }
+  async onSubmit() {
+    const path = `channel/${this.name.value}`;
+    const loading = await this.LoadingCon.create({
+      message: 'creating',
+      duration: 2000,
+    });
+    loading.present();
+    if (this.file) {
+      this.sub = this.fileUploadS
+        .upload(path, this.file)
+        .subscribe(async photoURL => {
+          const newChannel = new Channel(
+            this.name.value,
+            this.description.value,
+            this.user.uid,
+            photoURL,
+          );
+          await this.submit(newChannel);
+          await loading.dismiss();
+          await this.closeModal();
+        });
+    } else {
+      const newChannel = new Channel(
+        this.name.value,
+        this.description.value,
+        this.user.uid,
+        this.photoURL,
+      );
+      await this.submit(newChannel);
+      await loading.dismiss();
+      await this.closeModal();
+    }
+  }
 
-  // get nickname() {
-  //   return this.form.get('nickname');
-  // }
-  // get profileForm() {
-  //   return this.form;
-  // }
+  get name() {
+    return this.form.get('name');
+  }
+  get description() {
+    return this.form.get('description');
+  }
+  get profileForm() {
+    return this.form;
+  }
   ngOnDestroy(): void {
     if (this.sub) {
       this.sub.unsubscribe();

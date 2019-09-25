@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { finalize, switchMap, debounce, delay } from 'rxjs/operators';
+import { finalize, switchMap, debounce, delay, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class FileUploadService {
       .snapshotChanges()
       .pipe(
         finalize(() => {}),
-        delay(100),
+        delay(300),
         switchMap(() => this.afStor.ref(path).getDownloadURL()),
       );
   }
