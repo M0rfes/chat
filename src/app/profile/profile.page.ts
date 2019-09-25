@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -8,20 +8,22 @@ import { NicknameValidator } from '../util/nickname.validator';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { map, switchMap, finalize } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { switchMap, finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage implements OnInit, OnDestroy {
   @Input() new: boolean;
   @Input() user: User;
   form: FormGroup;
-  photoURL: Observable<string>;
+  photoURL: string;
   file: File;
+  sub: Subscription;
+
   constructor(
     private modalCon: ModalController,
     private asf: AngularFirestore,
@@ -31,7 +33,7 @@ export class ProfilePage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.photoURL = of(this.user.photoURL);
+    this.photoURL = this.user.photoURL;
     const nickNameVal = [
       [Validators.required, Validators.minLength(5), Validators.maxLength(25)],
       [NicknameValidator.nickname(this.asf, this.user, this.new)],
@@ -47,7 +49,7 @@ export class ProfilePage implements OnInit {
     }
   }
   onPreview(uri: string) {
-    this.photoURL = of(uri);
+    this.photoURL = uri;
   }
   onFile(file: File) {
     this.file = file;
@@ -56,28 +58,19 @@ export class ProfilePage implements OnInit {
     this.modalCon.dismiss();
   }
   private uploadProfilePhoto() {
-    if (!this.file.type.includes('image')) {
-      alert('not proper Image type');
-      return null;
-    } else {
-      const path = `profile/${new Date().getTime()}_${this.file.name}`;
-      console.log(path);
-      this.afStor
-        .upload(path, this.file)
-        .snapshotChanges()
-        .pipe(
-          finalize(
-            () => (this.photoURL = this.afStor.ref(path).getDownloadURL()),
-          ),
-        );
-    }
+    const path = `profile/${this.user.displayName}`;
+    console.log(path);
+    return this.afStor
+      .upload(path, this.file)
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {}),
+        switchMap(() => this.afStor.ref(path).getDownloadURL()),
+      );
   }
   onSubmit() {
     if (this.file) {
-      this.uploadProfilePhoto();
-    }
-    this.photoURL.subscribe(photoURL => {
-      if (this.new) {
+      this.sub = this.uploadProfilePhoto().subscribe(photoURL => {
         const newUser = new User(
           this.user.displayName,
           photoURL,
@@ -85,12 +78,27 @@ export class ProfilePage implements OnInit {
           this.user.email,
           this.nickname.value,
         );
-        this.userS.createUser(newUser);
-      } else {
-        this.userS.updateUserData({ nickname: this.nickname.value, photoURL });
-      }
-      return this.closeModal();
-    });
+        this.submit(newUser).then(() => this.closeModal());
+      });
+    } else {
+      const newUser = new User(
+        this.user.displayName,
+        this.photoURL,
+        this.user.uid,
+        this.user.email,
+        this.nickname.value,
+      );
+      this.submit(newUser).then(() => this.closeModal());
+    }
+  }
+
+  private submit(user: User) {
+    if (this.new) {
+      return this.userS.createUser(user);
+    } else {
+      this.sub = this.userS.updateUserData(user);
+      return new Promise(res => res(null));
+    }
   }
 
   get nickname() {
@@ -98,5 +106,8 @@ export class ProfilePage implements OnInit {
   }
   get profileForm() {
     return this.form;
+  }
+  ngOnDestroy(): void {
+    this.sub ? this.sub.unsubscribe() : null;
   }
 }
