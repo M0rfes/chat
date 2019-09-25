@@ -13,6 +13,7 @@ const routes: Routes = [
   },
   { path: '**', redirectTo: 'auth' },
   { path: 'settings', loadChildren: './settings/settings.module#SettingsPageModule' },
+  { path: 'create-channel', loadChildren: './create-channel/create-channel.module#CreateChannelPageModule' },
 
 ];
 

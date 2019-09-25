@@ -12,6 +12,7 @@
   <ion-tabs (ionTabsDidChange)="change($event)">
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="contact">
+        <ion-badge>{{ loggedInUsers ? loggedInUsers.length : 0 }}</ion-badge>
         <ion-icon name="contacts"></ion-icon>
       </ion-tab-button>
       <ion-tab-button tab="channels">

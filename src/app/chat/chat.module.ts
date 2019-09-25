@@ -50,7 +50,6 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-
     SettingsPageModule,
     RouterModule.forChild(routes),
   ],

@@ -9,6 +9,7 @@ import { SettingsPage } from '../settings/settings.page';
 
 import { User } from '../models/user.model';
 import { UserService } from '../service/user.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -23,6 +24,7 @@ export class ChatPage implements OnInit {
     'favorites',
   ];
   user: User;
+  loggedInUsers: User[];
   constructor(
     private popCon: PopoverController,
     private navCon: NavController,
@@ -30,7 +32,20 @@ export class ChatPage implements OnInit {
     private userS: UserService,
   ) {}
   ngOnInit() {
-    this.userS.user$.subscribe(user => (this.user = user));
+    this.userS.setOnline(true);
+    this.userS.user$
+      .pipe(
+        switchMap(user => {
+          this.user = user;
+          return this.userS.allOnlineUsers();
+        }),
+      )
+      .subscribe(
+        users =>
+          (this.loggedInUsers = users.filter(
+            user => user.uid !== this.user.uid,
+          )),
+      );
   }
   change({ tab }: { tab: 'contact' | 'channels' | 'favorites' }) {
     this.title = tab;
@@ -42,6 +57,7 @@ export class ChatPage implements OnInit {
         new: false,
         user,
       },
+      id: 'profile',
     });
     return modal.present();
   }

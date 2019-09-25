@@ -24,8 +24,10 @@ export class AuthService {
   }
 
   signOut() {
-    this.afAuth.auth.signOut().then(() => {
-      this.router.navigate(['/']);
+    return this.userS.setOnline(false).then(() => {
+      return this.afAuth.auth.signOut().then(() => {
+        this.router.navigate(['/']);
+      });
     });
   }
 

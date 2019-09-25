@@ -19,6 +19,8 @@ export class SettingsPage implements OnInit {
     this.loadModal().then(_ => this.popOverCon.dismiss());
   }
   doLogout() {
-    this.authS.signOut();
+    this.authS.signOut().then(() => {
+      this.popOverCon.dismiss();
+    });
   }
 }

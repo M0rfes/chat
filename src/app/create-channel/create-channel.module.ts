@@ -5,14 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ChannelPage } from './channel.page';
-import { CreateChannelPageModule } from 'src/app/create-channel/create-channel.module';
+import { CreateChannelPage } from './create-channel.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: ChannelPage,
-  },
+    component: CreateChannelPage
+  }
 ];
 
 @NgModule({
@@ -20,8 +19,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes),
+    RouterModule.forChild(routes)
   ],
-  declarations: [ChannelPage],
+  declarations: [CreateChannelPage]
 })
-export class ChannelPageModule {}
+export class CreateChannelPageModule {}

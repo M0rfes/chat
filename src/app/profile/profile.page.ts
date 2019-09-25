@@ -54,8 +54,9 @@ export class ProfilePage implements OnInit, OnDestroy {
   onFile(file: File) {
     this.file = file;
   }
-  closeModal() {
-    this.modalCon.dismiss();
+  async closeModal() {
+    const modal = await this.modalCon.getTop();
+    modal.dismiss();
   }
   private uploadProfilePhoto() {
     const path = `profile/${this.user.displayName}`;
@@ -67,6 +68,14 @@ export class ProfilePage implements OnInit, OnDestroy {
         finalize(() => {}),
         switchMap(() => this.afStor.ref(path).getDownloadURL()),
       );
+  }
+  private submit(user: User) {
+    if (this.new) {
+      return this.userS.createUser(user);
+    } else {
+      this.sub = this.userS.updateUserData(user);
+      return new Promise(res => res(null));
+    }
   }
   onSubmit() {
     if (this.file) {
@@ -92,15 +101,6 @@ export class ProfilePage implements OnInit, OnDestroy {
     }
   }
 
-  private submit(user: User) {
-    if (this.new) {
-      return this.userS.createUser(user);
-    } else {
-      this.sub = this.userS.updateUserData(user);
-      return new Promise(res => res(null));
-    }
-  }
-
   get nickname() {
     return this.form.get('nickname');
   }
@@ -108,6 +108,8 @@ export class ProfilePage implements OnInit, OnDestroy {
     return this.form;
   }
   ngOnDestroy(): void {
-    this.sub ? this.sub.unsubscribe() : null;
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 }

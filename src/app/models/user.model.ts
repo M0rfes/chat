@@ -5,5 +5,6 @@ export class User {
     public readonly uid: string,
     public readonly email: string,
     public readonly nickname: string,
+    public readonly isOnline: boolean = true,
   ) {}
 }

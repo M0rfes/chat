@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
+
 import { Observable, of } from 'rxjs';
 import { User } from '../models/user.model';
 import {
@@ -15,16 +15,14 @@ import { switchMap } from 'rxjs/operators';
 })
 export class UserService {
   user$: Observable<User>;
+  user: User;
 
   userCollectionRef: AngularFirestoreCollection<User>;
-  constructor(
-    private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
-    private afStor: AngularFireStorage,
-  ) {
+  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
+          this.user = user as any;
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
           return of(null);
@@ -45,5 +43,16 @@ export class UserService {
     return this.user$.subscribe(user =>
       this.userCollectionRef.doc(user.uid).update({ ...user, ...NewUser }),
     );
+  }
+  setOnline(isOnline: boolean) {
+    return this.userCollectionRef.doc(this.user.uid).update({ isOnline });
+  }
+  findOn(uid: string) {
+    return this.userCollectionRef.doc(uid).valueChanges();
+  }
+  allOnlineUsers() {
+    return this.afs
+      .collection<User>('users', ref => ref.where('isOnline', '==', true))
+      .valueChanges();
   }
 }
