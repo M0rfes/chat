@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ProfilePage } from './profile.page';
+import { PreviewDirective } from '../preview.directive';
 
 const routes: Routes = [
   {
@@ -21,6 +22,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ReactiveFormsModule,
   ],
-  declarations: [ProfilePage],
+  declarations: [ProfilePage, PreviewDirective],
 })
 export class ProfilePageModule {}

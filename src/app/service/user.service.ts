@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable, of } from 'rxjs';
 import { User } from '../models/user.model';
 import {
@@ -15,8 +15,13 @@ import { switchMap } from 'rxjs/operators';
 })
 export class UserService {
   user$: Observable<User>;
+
   userCollectionRef: AngularFirestoreCollection<User>;
-  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
+  constructor(
+    private afAuth: AngularFireAuth,
+    private afs: AngularFirestore,
+    private afStor: AngularFireStorage,
+  ) {
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
@@ -36,9 +41,9 @@ export class UserService {
     );
     return userRef.set({ ...user }, { merge: true });
   }
-  updateUserData(Newuser: Partial<User>) {
+  updateUserData(NewUser: Partial<User>) {
     return this.user$.subscribe(user =>
-      this.userCollectionRef.doc(user.uid).update({ ...user, ...Newuser }),
+      this.userCollectionRef.doc(user.uid).update({ ...user, ...NewUser }),
     );
   }
 }

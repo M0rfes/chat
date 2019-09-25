@@ -17,7 +17,7 @@
           <ion-row class="ion-justify-content-center">
             <ion-col size="6" offset="3" (click)="file.click()">
               <ion-avatar>
-                <ion-img [src]="photoURL" name="file"></ion-img>
+                <ion-img [src]="photoURL | async" name="file"></ion-img>
               </ion-avatar>
               <ion-icon
                 name="camera"
@@ -25,7 +25,15 @@
                 color="tertiary"
               ></ion-icon>
 
-              <input type="file" hidden #file (change)="onFileChange($event)" />
+              <input
+                type="file"
+                hidden
+                #file
+                appPreview
+                (preview)="onPreview($event)"
+                (file)="onFile($event)"
+                accept="image/png,image/jpg/,image/jpeg"
+              />
             </ion-col>
           </ion-row>
           <ion-item class="mar">
