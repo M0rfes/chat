@@ -15,6 +15,7 @@ export class ChannelService {
   }
 
   async createChannel(channel: Channel) {
+    console.log(channel);
     const { id } = await this.channelCollection.add({
       ...channel,
     });
@@ -27,7 +28,17 @@ export class ChannelService {
     return this.channelCollection.doc<Channel>(id).valueChanges();
   }
   getALL() {
-    return this.channelCollection.get();
+    return this.channelCollection.valueChanges();
+  }
+  get(lastId: string) {
+    return this.afs
+      .collection<Channel>('channels', ref =>
+        ref
+          .orderBy('id')
+          .startAfter(lastId)
+          .limit(10),
+      )
+      .valueChanges();
   }
   delete(id: string) {
     return this.channelCollection.doc(id).delete();

@@ -49,7 +49,17 @@ export class UserService {
     return this.userCollectionRef.doc(uid).valueChanges();
   }
   getAll() {
-    return this.userCollectionRef.get();
+    return this.userCollectionRef.valueChanges();
+  }
+  get(lastId: string) {
+    return this.afs
+      .collection<User>('users', ref =>
+        ref
+          .orderBy('uid')
+          .startAfter(lastId)
+          .limit(10),
+      )
+      .valueChanges();
   }
   allOnlineUsers() {
     return this.afs

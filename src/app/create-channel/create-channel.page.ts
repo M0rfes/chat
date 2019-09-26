@@ -3,7 +3,6 @@ import { ModalController, LoadingController } from '@ionic/angular';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/firestore';
 
 import { FileUploadService } from '../service/file-upload.service';
 
@@ -27,7 +26,6 @@ export class CreateChannelPage implements OnInit, OnDestroy {
 
   constructor(
     private modalCon: ModalController,
-    private asf: AngularFirestore,
     private formB: FormBuilder,
     private channelS: ChannelService,
     private LoadingCon: LoadingController,
@@ -74,6 +72,7 @@ export class CreateChannelPage implements OnInit, OnDestroy {
     }
   }
   async onSubmit() {
+    this.form.disable();
     const path = `channel/${this.name.value}`;
     const loading = await this.LoadingCon.create({
       message: 'creating',

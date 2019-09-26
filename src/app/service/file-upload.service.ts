@@ -14,6 +14,7 @@ export class FileUploadService {
       .snapshotChanges()
       .pipe(
         finalize(() => {}),
+        delay(1000),
         switchMap(() => this.afStor.ref(path).getDownloadURL()),
       );
   }
