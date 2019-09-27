@@ -6,12 +6,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ContactPage } from './contact.page';
+import { ChatSharedModule } from '../chat-shared/chat-shared.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: ContactPage
-  }
+    component: ContactPage,
+  },
 ];
 
 @NgModule({
@@ -19,8 +20,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ChatSharedModule,
   ],
-  declarations: [ContactPage]
+  declarations: [ContactPage],
 })
 export class ContactPageModule {}

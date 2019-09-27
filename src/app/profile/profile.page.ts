@@ -4,11 +4,10 @@ import { ModalController, LoadingController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../models/user.model';
 import { UserService } from '../service/user.service';
-import { NicknameValidator } from '../util/nickname.validator';
+import { IsNewValidator } from '../util/isNew.validator';
 
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage } from '@angular/fire/storage';
-import { switchMap, finalize } from 'rxjs/operators';
+
 import { Subscription } from 'rxjs';
 import { FileUploadService } from '../service/file-upload.service';
 
@@ -28,7 +27,6 @@ export class ProfilePage implements OnInit, OnDestroy {
   constructor(
     private modalCon: ModalController,
     private asf: AngularFirestore,
-    private afStor: AngularFireStorage,
     private formB: FormBuilder,
     private userS: UserService,
     private LoadingCon: LoadingController,
@@ -39,7 +37,15 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.photoURL = this.user.photoURL;
     const nickNameVal = [
       [Validators.required, Validators.minLength(5), Validators.maxLength(25)],
-      [NicknameValidator.nickname(this.asf, this.user, this.new)],
+      [
+        IsNewValidator.field(
+          this.asf,
+          this.user,
+          this.new,
+          'users',
+          'nickname',
+        ),
+      ],
     ];
     if (this.new) {
       this.form = this.formB.group({
@@ -70,6 +76,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     }
   }
   async onSubmit() {
+    this.form.disable();
     const path = `profile/${this.user.uid}`;
     const loading = await this.LoadingCon.create({
       message: 'uploading',

@@ -50,7 +50,7 @@
             ></ion-input>
           </ion-item>
           <ion-label *ngIf="nickname.invalid && nickname.dirty" color="danger">
-            <ion-text *ngIf="nickname.errors['nickname']; else def">
+            <ion-text *ngIf="nickname.errors['notNew']; else def">
               nick name already taken
             </ion-text>
             <ng-template #def>

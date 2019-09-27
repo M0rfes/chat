@@ -50,8 +50,8 @@
             ></ion-input>
           </ion-item>
           <ion-label *ngIf="name.invalid && name.dirty" color="danger">
-            <ion-text *ngIf="name.errors['nickname']; else def">
-              nick name already taken
+            <ion-text *ngIf="name.errors['notNew']; else def">
+              name already taken
             </ion-text>
             <ng-template #def>
               <ion-text>
@@ -65,22 +65,20 @@
             </ion-label>
             <ion-textarea
               type="text"
-              name="nickname"
+              name="description"
               formControlName="description"
-              required
               rows="6"
               cols="20"
+              required
             ></ion-textarea>
           </ion-item>
-          <ion-label *ngIf="name.invalid && name.dirty" color="danger">
-            <ion-text *ngIf="name.errors['nickname']; else def">
-              nick name already taken
+          <ion-label
+            *ngIf="description.invalid && description.dirty"
+            color="danger"
+          >
+            <ion-text>
+              description must be between 25 and 225
             </ion-text>
-            <ng-template #def>
-              <ion-text>
-                name must be between 5 and 25
-              </ion-text>
-            </ng-template>
           </ion-label>
           <ion-button
             type="submit"

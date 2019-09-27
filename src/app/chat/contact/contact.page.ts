@@ -12,7 +12,7 @@ import { map, tap } from 'rxjs/operators';
 })
 export class ContactPage implements OnInit, OnDestroy {
   user: User;
-  users: User[] = [];
+  users: User[];
   lastId = '';
   sub: Subscription;
   sub2: Subscription;
@@ -29,6 +29,7 @@ export class ContactPage implements OnInit, OnDestroy {
       } else {
         this.lastId = users[users.length - 1].uid;
         this.users = users;
+        console.log(users);
       }
     });
     this.user = this.userS.user;

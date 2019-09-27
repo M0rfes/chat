@@ -9,6 +9,8 @@ import { FileUploadService } from '../service/file-upload.service';
 import { User } from '../models/user.model';
 import { ChannelService } from '../service/channel.service';
 import { Channel } from '../models/channel.model';
+import { IsNewValidator } from '../util/isNew.validator';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-create-channel',
@@ -30,6 +32,7 @@ export class CreateChannelPage implements OnInit, OnDestroy {
     private channelS: ChannelService,
     private LoadingCon: LoadingController,
     private fileUploadS: FileUploadService,
+    private afs: AngularFirestore,
   ) {}
 
   ngOnInit(): void {
@@ -38,17 +41,32 @@ export class CreateChannelPage implements OnInit, OnDestroy {
       : 'https://source.unsplash.com/random';
     const nameVal = [
       [Validators.required, Validators.minLength(5), Validators.maxLength(25)],
-      // [NicknameValidator.nickname(this.asf, this.user, this.new)],
+      [
+        IsNewValidator.field<Channel>(
+          this.afs,
+          this.channel,
+          this.new,
+          'channels',
+          'name',
+        ),
+      ],
+    ];
+    const despVal = [
+      [
+        Validators.required,
+        Validators.minLength(25),
+        Validators.maxLength(225),
+      ],
     ];
     if (this.new) {
       this.form = this.formB.group({
         name: ['', ...nameVal],
-        description: [''],
+        description: ['', ...despVal],
       });
     } else {
       this.form = this.formB.group({
         name: ['', ...nameVal],
-        description: [''],
+        description: ['', ...despVal],
       });
     }
   }

@@ -1,20 +1,4 @@
-<ion-list>
-  <ion-virtual-scroll [items]="users">
-    <ion-item *virtualItem="let u" class="ion-no-padding">
-      <ion-avatar>
-        <ion-img [src]="u.photoURL"></ion-img>
-      </ion-avatar>
-      <ion-label style="margin-left: 1rem">
-        {{ u.nickname }}
-      </ion-label>
-      <ion-icon
-        [name]="u.isOnline ? 'radio-button-on' : 'radio-button-off'"
-        [color]="u.isOnline ? 'success' : ''"
-      ></ion-icon>
-    </ion-item>
-  </ion-virtual-scroll>
-</ion-list>
-
+<app-chat-list [data]="users" (loadData)="loadData($event)"> </app-chat-list>
 <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
   <ion-infinite-scroll-content loadingText="Loading more data...">
   </ion-infinite-scroll-content>

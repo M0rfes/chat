@@ -6,7 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ChannelPage } from './channel.page';
-import { CreateChannelPageModule } from 'src/app/create-channel/create-channel.module';
+
+import { ChatSharedModule } from '../chat-shared/chat-shared.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
+    ChatSharedModule,
   ],
   declarations: [ChannelPage],
 })
