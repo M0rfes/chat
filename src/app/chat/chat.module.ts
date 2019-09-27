@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { ChatPage } from './chat.page';
 import { SettingsPageModule } from '../settings/settings.module';
+import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,7 @@ const routes: Routes = [
     ],
   },
   { path: '', pathMatch: 'full', redirectTo: '/chat/channels' },
+  { path: ':id', component: TestComponent },
 ];
 
 @NgModule({
@@ -53,6 +55,6 @@ const routes: Routes = [
     SettingsPageModule,
     RouterModule.forChild(routes),
   ],
-  declarations: [ChatPage],
+  declarations: [ChatPage, TestComponent],
 })
 export class ChatPageModule {}

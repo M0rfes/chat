@@ -1,4 +1,9 @@
-<ion-item class="ion-no-padding" detail>
+<ion-item
+  class="ion-no-padding"
+  detail
+  [routerLink]="['/chat', data.uid]"
+  routerLinkActive="router-link-active"
+>
   <ion-avatar class="ion-margin">
     <ion-img [src]="data.photoURL"></ion-img>
   </ion-avatar>

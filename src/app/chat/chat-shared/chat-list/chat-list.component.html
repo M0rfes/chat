@@ -1,13 +1,11 @@
-<ion-list>
-  <ion-virtual-scroll [items]="data">
-    <div *virtualItem="let u">
-      <app-chat-list-item [data]="u">
-        <ion-icon
-          *ngIf="u.nickname"
-          [name]="u.isOnline ? 'radio-button-on' : 'radio-button-off'"
-          [color]="u.isOnline ? 'success' : ''"
-        ></ion-icon>
-      </app-chat-list-item>
-    </div>
-  </ion-virtual-scroll>
-</ion-list>
+<ion-virtual-scroll [items]="data">
+  <div *virtualItem="let u">
+    <app-chat-list-item [data]="u">
+      <ion-icon
+        *ngIf="u.nickname"
+        [name]="u.isOnline ? 'radio-button-on' : 'radio-button-off'"
+        [color]="u.isOnline ? 'success' : ''"
+      ></ion-icon>
+    </app-chat-list-item>
+  </div>
+</ion-virtual-scroll>

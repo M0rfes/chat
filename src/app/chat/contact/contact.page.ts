@@ -19,7 +19,7 @@ export class ContactPage implements OnInit, OnDestroy {
   constructor(private userS: UserService) {}
   loadUsers(): Observable<User[]> {
     return this.userS
-      .get(this.lastId)
+      .getAll()
       .pipe(map(users => users.filter(u => u.uid !== this.user.uid)));
   }
   ngOnInit() {
@@ -34,18 +34,8 @@ export class ContactPage implements OnInit, OnDestroy {
     });
     this.user = this.userS.user;
   }
-  loadData({ target }: { target: IonInfiniteScroll }) {
-    this.sub = this.loadUsers().subscribe(users => {
-      target.complete();
-      if (users.length === 0) {
-        target.disabled = true;
-      } else {
-        this.users = [...this.users, ...users];
-      }
-    });
-  }
+
   ngOnDestroy(): void {
-    this.users = [];
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
   }

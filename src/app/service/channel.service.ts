@@ -19,7 +19,7 @@ export class ChannelService {
     const { id } = await this.channelCollection.add({
       ...channel,
     });
-    return await this.channelCollection.doc<Channel>(id).update({ id });
+    return await this.channelCollection.doc<Channel>(id).update({ uid: id });
   }
   updateChannel(id: string, channel: Partial<Channel>) {
     return this.channelCollection.doc<Channel>(id).update({ ...channel });
@@ -34,7 +34,7 @@ export class ChannelService {
     return this.afs
       .collection<Channel>('channels', ref =>
         ref
-          .orderBy('id')
+          .orderBy('Uid')
           .startAfter(lastId)
           .limit(10),
       )

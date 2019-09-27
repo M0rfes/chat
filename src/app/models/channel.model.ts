@@ -4,6 +4,6 @@ export class Channel {
     public readonly description: string,
     public readonly userId: string,
     public readonly photoURL: string,
-    public id: string = '',
+    public uid: string = '',
   ) {}
 }

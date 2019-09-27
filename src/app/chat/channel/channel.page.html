@@ -1,5 +1,6 @@
-<app-chat-list [data]="channels" (loadData)="loadData($event)"> </app-chat-list>
-<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-  <ion-infinite-scroll-content loadingText="Loading more data...">
-  </ion-infinite-scroll-content>
-</ion-infinite-scroll>
+<app-chat-list [data]="channels" (swipe)="handelSwipe()"> </app-chat-list>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="onCreateNew()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
-import { ModalController, IonInfiniteScroll } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { CreateChannelPage } from 'src/app/create-channel/create-channel.page';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/service/user.service';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Channel } from 'src/app/models/channel.model';
 import { ChannelService } from 'src/app/service/channel.service';
-import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-channel',
@@ -16,6 +15,7 @@ import { map, tap } from 'rxjs/operators';
 })
 export class ChannelPage implements OnInit, OnDestroy {
   user: User;
+  test = 'test';
   channel: Channel;
   channels: Channel[] = [];
   lastId = '';
@@ -31,16 +31,17 @@ export class ChannelPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.userS.user$.subscribe(user => (this.user = user));
     this.loadChannels().subscribe(channels => {
+      console.log(channels, this.lastId);
       if (channels.length === 0) {
         return 0;
       } else {
-        this.lastId = channels[channels.length - 1].id;
+        this.lastId = channels[channels.length - 1].uid;
         this.channels = channels;
       }
     });
   }
   loadChannels() {
-    return this.channelS.get(this.lastId);
+    return this.channelS.getALL();
   }
   async onCreateNew() {
     const modal = await this.modalCon.create({
@@ -53,19 +54,10 @@ export class ChannelPage implements OnInit, OnDestroy {
     });
     await modal.present();
   }
-  loadData({ target }: { target: IonInfiniteScroll }) {
-    this.sub = this.loadChannels().subscribe(channels => {
-      target.complete();
-      if (channels.length === 0) {
-        target.disabled = true;
-      } else {
-        this.channels = [...this.channels, ...channels];
-      }
-    });
-  }
+
   ngOnDestroy(): void {
-    this.channels = [];
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
   }
+  handelSwipe() {}
 }

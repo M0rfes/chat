@@ -11,6 +11,7 @@ import { ChannelService } from '../service/channel.service';
 import { Channel } from '../models/channel.model';
 import { IsNewValidator } from '../util/isNew.validator';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-channel',
@@ -81,23 +82,23 @@ export class CreateChannelPage implements OnInit, OnDestroy {
     const modal = await this.modalCon.getTop();
     modal.dismiss();
   }
-  private submit(channel: Channel) {
+  private async submit(channel: Channel) {
     if (this.new) {
-      return this.channelS.createChannel(channel);
+      return await this.channelS.createChannel(channel);
     } else {
-      this.channelS.updateChannel(this.channel.id, channel);
-      return new Promise(res => res(null));
+      return await this.channelS.updateChannel(this.channel.uid, channel);
     }
   }
   async onSubmit() {
     this.form.disable();
-    const path = `channel/${this.name.value}`;
+    console.log('clicked');
     const loading = await this.LoadingCon.create({
       message: 'creating',
-      duration: 2000,
+      duration: 5000,
     });
-    loading.present();
+    await loading.present();
     if (this.file) {
+      const path = `channel/${this.name.value}`;
       this.sub = this.fileUploadS
         .upload(path, this.file)
         .subscribe(async photoURL => {
@@ -107,10 +108,12 @@ export class CreateChannelPage implements OnInit, OnDestroy {
             this.user.uid,
             photoURL,
           );
+          console.log(photoURL);
           await this.submit(newChannel);
           await loading.dismiss();
           await this.closeModal();
         });
+      return;
     } else {
       const newChannel = new Channel(
         this.name.value,
@@ -121,6 +124,8 @@ export class CreateChannelPage implements OnInit, OnDestroy {
       await this.submit(newChannel);
       await loading.dismiss();
       await this.closeModal();
+
+      return;
     }
   }
 

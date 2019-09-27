@@ -10,6 +10,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 import { Subscription } from 'rxjs';
 import { FileUploadService } from '../service/file-upload.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -68,22 +69,22 @@ export class ProfilePage implements OnInit, OnDestroy {
     const modal = await this.modalCon.getTop();
     modal.dismiss();
   }
-  private submit(user: User) {
+  private async submit(user: User) {
     if (this.new) {
-      return this.userS.createUser(user);
+      return await this.userS.createUser(user);
     } else {
-      return this.userS.updateUserData(user);
+      return await this.userS.updateUserData(user);
     }
   }
   async onSubmit() {
     this.form.disable();
-    const path = `profile/${this.user.uid}`;
     const loading = await this.LoadingCon.create({
       message: 'uploading',
-      duration: 2000,
+      duration: 5000,
     });
     loading.present();
     if (this.file) {
+      const path = `profile/${this.user.uid}`;
       this.sub = this.fileUploadS
         .upload(path, this.file)
         .subscribe(async photoURL => {
@@ -98,6 +99,7 @@ export class ProfilePage implements OnInit, OnDestroy {
           await loading.dismiss();
           await this.closeModal();
         });
+      return;
     } else {
       const newUser = new User(
         this.user.displayName,
@@ -109,6 +111,7 @@ export class ProfilePage implements OnInit, OnDestroy {
       await this.submit(newUser);
       await loading.dismiss();
       await this.closeModal();
+      return;
     }
   }
 
