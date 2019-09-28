@@ -4,12 +4,23 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="../"> </ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="secondary" (click)="addToFva()">
+    <ion-buttons slot="end" (click)="addToFva($event)">
       <ion-button>
-        <ion-icon name="bookmark" slot="icon-only" color="danger"></ion-icon>
+        <ion-icon
+          name="bookmark"
+          slot="icon-only"
+          [color]="isFav ? 'danger' : 'light'"
+        ></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <div class="chat-input">
+    <ion-input placeholder="Text"></ion-input>
+    <ion-button>
+      <ion-icon name="paper-plane"></ion-icon>
+    </ion-button>
+  </div>
+</ion-content>

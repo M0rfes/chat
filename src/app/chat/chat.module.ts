@@ -44,7 +44,7 @@ const routes: Routes = [
   },
   { path: '', pathMatch: 'full', redirectTo: '/chat/channels' },
   {
-    path: ':id',
+    path: ':chatName',
     loadChildren: './chat-shared/messages/messages.module#MessagesPageModule',
   },
 ];

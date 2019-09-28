@@ -7,14 +7,15 @@ import {
   AngularFirestore,
 } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   user$: Observable<User>;
-  user: User;
+  usersCollection: AngularFirestoreCollection<User>;
+  private user: User;
 
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
     this.user$ = this.afAuth.authState.pipe(
@@ -27,22 +28,25 @@ export class UserService {
       }),
     );
     this.user$.subscribe(u => (this.user = u));
+    this.usersCollection = this.afs.collection<User>('users');
   }
   createUser(user: User) {
     const userRef = this.afs.doc<User>(`users/${user.uid}`);
     return userRef.set({ ...user, favChats: [] }, { merge: true });
   }
   updateUserData(NewUser: Partial<User>) {
-    return this.afs.doc<User>(`users/${this.user.uid}`).update({ ...NewUser });
+    return this.usersCollection.doc<User>(this.user.uid).update({ ...NewUser });
   }
   setOnline(isOnline: boolean) {
     return this.updateUserData({ isOnline });
   }
   findOne(uid: string) {
-    return this.afs.doc<User>(`users/${uid}`).valueChanges();
+    return this.usersCollection.doc(uid).valueChanges();
   }
   getAll() {
-    return this.afs.collection<User>('users').valueChanges();
+    return this.usersCollection
+      .valueChanges()
+      .pipe(map(users => users.filter(user => user.uid !== this.user.uid)));
   }
   get(lastId: string) {
     return this.afs
@@ -60,6 +64,14 @@ export class UserService {
       .valueChanges();
   }
   addChatToFav(chatName: string) {
-    return this.updateUserData({ favChats: [...this.user.favChats, chatName] });
+    if (this.user.favChats.includes(chatName)) {
+      return this.updateUserData({
+        favChats: this.user.favChats.filter(chat => chat !== chatName),
+      });
+    } else {
+      return this.updateUserData({
+        favChats: [...this.user.favChats, chatName],
+      });
+    }
   }
 }

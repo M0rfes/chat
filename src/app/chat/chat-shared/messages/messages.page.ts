@@ -8,15 +8,23 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./messages.page.scss'],
 })
 export class MessagesPage implements OnInit {
+  isFav: boolean;
+  chatName: string;
   constructor(
     private userS: UserService,
     private activeRoute: ActivatedRoute,
   ) {}
 
-  ngOnInit() {}
-  addToFva() {
-    this.activeRoute.params.subscribe(({ id }) => {
-      this.userS.addChatToFav(id);
+  ngOnInit() {
+    this.activeRoute.params.subscribe(({ chatName }) => {
+      this.chatName = chatName;
     });
+    this.userS.user$.subscribe(
+      ({ favChats }) => (this.isFav = favChats.includes(this.chatName)),
+    );
+  }
+  addToFva(event: Event) {
+    event.preventDefault();
+    this.userS.addChatToFav(this.chatName);
   }
 }
