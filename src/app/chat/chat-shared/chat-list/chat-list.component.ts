@@ -13,4 +13,11 @@ export class ChatListComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  loadData(event) {
+    setTimeout(() => {
+      console.log('Done');
+      event.target.complete();
+    }, 500);
+  }
 }

@@ -6,10 +6,22 @@ import { ChatListItemComponent } from './chat-list-item/chat-list-item.component
 import { IonicModule } from '@ionic/angular';
 
 import { RouterModule } from '@angular/router';
+import { ChatSkeletonComponent } from './chat-skeleton/chat-skeleton.component';
+import { PreviewDirective } from 'src/app/preview.directive';
 
 @NgModule({
-  declarations: [ChatListComponent, ChatListItemComponent],
+  declarations: [
+    ChatListComponent,
+    ChatListItemComponent,
+    ChatSkeletonComponent,
+    PreviewDirective,
+  ],
   imports: [CommonModule, IonicModule, RouterModule],
-  exports: [ChatListComponent, ChatListItemComponent],
+  exports: [
+    ChatListComponent,
+    ChatListItemComponent,
+    ChatSkeletonComponent,
+    PreviewDirective,
+  ],
 })
 export class ChatSharedModule {}

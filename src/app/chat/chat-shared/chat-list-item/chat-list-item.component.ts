@@ -15,4 +15,5 @@ export class ChatListItemComponent implements OnInit {
   ngOnInit() {
     this.name = this.data.email ? this.data.nickname : this.data.name;
   }
+  handelSwipe() {}
 }

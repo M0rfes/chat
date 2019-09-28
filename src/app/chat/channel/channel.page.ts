@@ -17,7 +17,7 @@ export class ChannelPage implements OnInit, OnDestroy {
   user: User;
   test = 'test';
   channel: Channel;
-  channels: Channel[] = [];
+  channels: Channel[];
   lastId = '';
   sub: Subscription;
   sub2: Subscription;
@@ -41,7 +41,7 @@ export class ChannelPage implements OnInit, OnDestroy {
     });
   }
   loadChannels() {
-    return this.channelS.getALL();
+    return this.channelS.get(this.lastId);
   }
   async onCreateNew() {
     const modal = await this.modalCon.create({

@@ -34,7 +34,7 @@ export class ChannelService {
     return this.afs
       .collection<Channel>('channels', ref =>
         ref
-          .orderBy('Uid')
+          .orderBy('uid')
           .startAfter(lastId)
           .limit(10),
       )

@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PreviewDirective } from '../preview.directive';
 
 @NgModule({
-  declarations: [PreviewDirective],
+  declarations: [],
   imports: [CommonModule],
-  exports: [PreviewDirective],
+  exports: [],
 })
 export class SharedModule {}

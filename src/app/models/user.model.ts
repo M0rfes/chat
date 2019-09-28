@@ -1,4 +1,5 @@
 export class User {
+  public readonly favChats: string[];
   constructor(
     public readonly displayName: string,
     public readonly photoURL: string,

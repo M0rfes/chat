@@ -3,6 +3,7 @@
   detail
   [routerLink]="['/chat', data.uid]"
   routerLinkActive="router-link-active"
+  (swipe)="handelSwipe()"
 >
   <ion-avatar class="ion-margin">
     <ion-img [src]="data.photoURL"></ion-img>

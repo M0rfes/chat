@@ -1,11 +1,21 @@
-<ion-virtual-scroll [items]="data">
-  <div *virtualItem="let u">
-    <app-chat-list-item [data]="u">
-      <ion-icon
-        *ngIf="u.nickname"
-        [name]="u.isOnline ? 'radio-button-on' : 'radio-button-off'"
-        [color]="u.isOnline ? 'success' : ''"
-      ></ion-icon>
-    </app-chat-list-item>
-  </div>
-</ion-virtual-scroll>
+<app-chat-skeleton *ngIf="!data"></app-chat-skeleton>
+<ion-list *ngIf="data">
+  <ion-virtual-scroll [items]="data">
+    <div *virtualItem="let u">
+      <app-chat-list-item [data]="u">
+        <ion-icon
+          *ngIf="u.nickname"
+          [name]="u.isOnline ? 'radio-button-on' : 'radio-button-off'"
+          [color]="u.isOnline ? 'success' : ''"
+        ></ion-icon>
+      </app-chat-list-item>
+    </div>
+  </ion-virtual-scroll>
+</ion-list>
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Loading more data..."
+  >
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
