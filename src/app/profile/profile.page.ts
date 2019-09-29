@@ -73,7 +73,6 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
   private async submit(user: User) {
     if (this.new) {
-      await this.chatS.createChat(user.uid);
       return await this.userS.createUser(user);
     } else {
       return await this.userS.updateUserData(user);

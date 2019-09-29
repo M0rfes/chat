@@ -8,6 +8,7 @@ import {
 } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { switchMap, map } from 'rxjs/operators';
+import { ChatService } from './chat.service';
 
 @Injectable({
   providedIn: 'root',
@@ -44,19 +45,10 @@ export class UserService {
     return this.usersCollection.doc(uid).valueChanges();
   }
   getAll() {
-    return this.usersCollection
-      .valueChanges()
-      .pipe(map(users => users.filter(user => user.uid !== this.user.uid)));
+    return this.usersCollection.valueChanges();
   }
-  get(lastId: string) {
-    return this.afs
-      .collection<User>('users', ref =>
-        ref
-          .orderBy('uid')
-          .startAfter(lastId)
-          .limit(10),
-      )
-      .valueChanges();
+  get() {
+    return this.usersCollection.valueChanges();
   }
   allOnlineUsers() {
     return this.afs

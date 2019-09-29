@@ -12,7 +12,7 @@ import { map, tap, switchMap } from 'rxjs/operators';
 })
 export class ContactPage implements OnInit, OnDestroy {
   users: User[];
-  lastId = '';
+
   sub: Subscription;
   sub2: Subscription;
   constructor(private userS: UserService) {}
@@ -21,12 +21,7 @@ export class ContactPage implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.sub2 = this.loadUsers().subscribe(users => {
-      if (users.length === 0) {
-        return 0;
-      } else {
-        this.lastId = users[users.length - 1].uid;
-        this.users = users;
-      }
+      this.users = users;
     });
   }
 

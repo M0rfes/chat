@@ -1,9 +1,14 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>messageSettings</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <ion-list>
+    <ion-item>
+      <ion-label (click)="onAddRemove()">
+        {{ !isFav ? 'Add To' : 'Remove From' }} fav
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="isOwner">
+      <ion-label (click)="onDelete()">
+        delete
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

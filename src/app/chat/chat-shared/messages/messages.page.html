@@ -14,12 +14,25 @@
 
 <ion-content>
   <ion-list *ngIf="chat">
-    <ion-item *ngFor="let msg of chat.msgs">
-      {{ msg.msg }}
+    <ion-item
+      *ngFor="let msg of chat.msgs"
+      class="ion-no-padding"
+      [ngClass]="{ 'ion-text-right': fromMe(msg) }"
+    >
+      <ion-avatar [slot]="fromMe(msg) ? 'end' : 'start'">
+        <ion-img [src]="msg.photoURL"></ion-img>
+      </ion-avatar>
+      <ion-label>
+        {{ msg.msg }}
+      </ion-label>
     </ion-item>
   </ion-list>
   <div class="chat-input">
-    <ion-input placeholder="Text" [(ngModel)]="msg"></ion-input>
+    <ion-input
+      placeholder="Text"
+      [(ngModel)]="msg"
+      (change)="onEnter($event)"
+    ></ion-input>
     <ion-button [disabled]="!msg" (click)="onSend()">
       <ion-icon name="paper-plane"></ion-icon>
     </ion-button>

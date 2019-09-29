@@ -23,7 +23,6 @@ export class ChannelService {
     const { id } = await this.channelCollection.add({
       ...channel,
     });
-    this.chatS.createChat(id);
     return await this.channelCollection.doc<Channel>(id).update({ uid: id });
   }
   updateChannel(id: string, channel: Partial<Channel>) {
@@ -35,15 +34,8 @@ export class ChannelService {
   getALL() {
     return this.channelCollection.valueChanges();
   }
-  get(lastId: string) {
-    return this.afs
-      .collection<Channel>('channels', ref =>
-        ref
-          .orderBy('uid')
-          .startAfter(lastId)
-          .limit(10),
-      )
-      .valueChanges();
+  get() {
+    return this.channelCollection.valueChanges();
   }
   delete(id: string) {
     return this.channelCollection.doc(id).delete();

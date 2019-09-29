@@ -13,12 +13,11 @@ import { ChannelService } from 'src/app/service/channel.service';
   templateUrl: './channel.page.html',
   styleUrls: ['./channel.page.scss'],
 })
-export class ChannelPage implements OnInit, OnDestroy {
+export class ChannelPage {
   user: User;
-  test = 'test';
-  channel: Channel;
+
   channels: Channel[];
-  lastId = '';
+
   sub: Subscription;
   sub2: Subscription;
   constructor(
@@ -28,20 +27,11 @@ export class ChannelPage implements OnInit, OnDestroy {
     private channelS: ChannelService,
   ) {}
 
-  ngOnInit() {
+  ionViewDidEnter() {
     this.userS.user$.subscribe(user => (this.user = user));
-    this.loadChannels().subscribe(channels => {
-      console.log(channels, this.lastId);
-      if (channels.length === 0) {
-        return 0;
-      } else {
-        this.lastId = channels[channels.length - 1].uid;
-        this.channels = channels;
-      }
+    this.channelS.get().subscribe(channels => {
+      this.channels = channels;
     });
-  }
-  loadChannels() {
-    return this.channelS.get(this.lastId);
   }
   async onCreateNew() {
     const modal = await this.modalCon.create({
@@ -55,9 +45,14 @@ export class ChannelPage implements OnInit, OnDestroy {
     await modal.present();
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-    this.sub2.unsubscribe();
+  ionViewDidLeave(): void {
+    console.log('le');
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+    if (this.sub2) {
+      this.sub2.unsubscribe();
+    }
   }
   handelSwipe() {}
 }
