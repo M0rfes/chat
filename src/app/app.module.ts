@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 import { ProfilePageModule } from './profile/profile.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreateChannelPageModule } from './create-channel/create-channel.module';
+import { MessageSettingsPageModule } from './message-settings/message-settings.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { CreateChannelPageModule } from './create-channel/create-channel.module'
     ProfilePageModule,
     ReactiveFormsModule,
     CreateChannelPageModule,
+    MessageSettingsPageModule,
   ],
   providers: [
     StatusBar,

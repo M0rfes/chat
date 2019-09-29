@@ -4,22 +4,23 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="../"> </ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="end" (click)="addToFva($event)">
-      <ion-button>
-        <ion-icon
-          name="bookmark"
-          slot="icon-only"
-          [color]="isFav ? 'danger' : 'light'"
-        ></ion-icon>
+    <ion-buttons slot="end">
+      <ion-button (click)="presentMenu($event)">
+        <ion-icon name="more" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-list *ngIf="chat">
+    <ion-item *ngFor="let msg of chat.msgs">
+      {{ msg.msg }}
+    </ion-item>
+  </ion-list>
   <div class="chat-input">
-    <ion-input placeholder="Text"></ion-input>
-    <ion-button>
+    <ion-input placeholder="Text" [(ngModel)]="msg"></ion-input>
+    <ion-button [disabled]="!msg" (click)="onSend()">
       <ion-icon name="paper-plane"></ion-icon>
     </ion-button>
   </div>

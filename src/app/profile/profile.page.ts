@@ -11,6 +11,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 import { FileUploadService } from '../service/file-upload.service';
 import { take } from 'rxjs/operators';
+import { ChatService } from '../service/chat.service';
 
 @Component({
   selector: 'app-profile',
@@ -32,6 +33,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     private userS: UserService,
     private LoadingCon: LoadingController,
     private fileUploadS: FileUploadService,
+    private chatS: ChatService,
   ) {}
 
   ngOnInit(): void {
@@ -71,6 +73,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
   private async submit(user: User) {
     if (this.new) {
+      await this.chatS.createChat(user.uid);
       return await this.userS.createUser(user);
     } else {
       return await this.userS.updateUserData(user);

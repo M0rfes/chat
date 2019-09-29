@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
 })
 export class UserService {
   user$: Observable<User>;
-  usersCollection: AngularFirestoreCollection<User>;
+  private usersCollection: AngularFirestoreCollection<User>;
   private user: User;
 
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
